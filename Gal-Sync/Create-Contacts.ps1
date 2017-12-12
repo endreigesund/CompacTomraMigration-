@@ -17,7 +17,7 @@ $existingcontacts | %{
 }
 
 foreach($user in $SourceUsers){
-    Write-Host sjekker $($user.WindowsEmailAddress)
+    #Write-Host sjekker $($user.WindowsEmailAddress)
     if(!$ContactsTable.Contains($($user.WindowsEmailAddress))){
         #doesn't exist - Create
         Write-Host Oppretter $($user.WindowsEmailAddress)

@@ -23,16 +23,18 @@ $props = $SourceUsers | Get-Member | ?{$_.membertype -like 'Noteproperty'}
 foreach($Contact in $TargetContacts){
     $update = $false
     $SourceUser = $SourceUsersTable.Item($Contact.windowsemailaddress)
-    Write-Host Sammenligner info på bruker - $($Contact.windowsemailaddress)
-    foreach($property in $props){
-        if($SourceUser.$($property.name) -notlike $Contact.$($property.name)){
-            Write-Host Forskjell i $($property.name) - må oppdatere.
-            $update = $true
+    if($SourceUser){
+        Write-Host Sammenligner info på bruker - $($Contact.windowsemailaddress)
+        foreach($property in $props){
+            if($SourceUser.$($property.name) -notlike $Contact.$($property.name)){
+                Write-Host Forskjell i $($property.name) - må oppdatere.
+                $update = $true
+            }
         }
-    }
-    if($update){
-        $contact | Set-Contact -City $($sourceuser.city) -Company $($sourceuser.Company) -Department $($sourceuser.Department) -DisplayName $($sourceuser.DisplayName) -FirstName $($sourceuser.FirstName) -LastName $($sourceuser.LastName) -MobilePhone $($sourceuser.MobilePhone) -Office $($sourceuser.Office) -Phone $($sourceuser.Phone) -Title $($sourceuser.Title)
-        $updatecount += 1
+        if($update){
+            $contact | Set-Contact -City $($sourceuser.city) -Company $($sourceuser.Company) -Department $($sourceuser.Department) -DisplayName $($sourceuser.DisplayName) -FirstName $($sourceuser.FirstName) -LastName $($sourceuser.LastName) -MobilePhone $($sourceuser.MobilePhone) -Office $($sourceuser.Office) -Phone $($sourceuser.Phone) -Title $($sourceuser.Title)
+            $updatecount += 1
+        }
     }
 
 }
