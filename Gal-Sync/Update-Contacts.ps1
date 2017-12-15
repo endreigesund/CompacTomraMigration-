@@ -3,7 +3,9 @@
 
 $csvfile = 'C:\temp\tomrausers.csv'
 
-Connect-EXOPSSession # use credentials from target tenant (Compac)
+if(!(Get-AcceptedDomain).domainname -contains 'compacsort.com'){
+    Connect-EXOPSSession # use credentials from target tenant (Compac)
+}
 
 $SourceUsers = Import-Csv -Path $csvfile -Delimiter ";" -Encoding Default | ?{$_.windowsemailaddress -like "*@tomra.com"}
 $updatecount = 0

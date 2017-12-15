@@ -1,19 +1,25 @@
 ﻿#create contacts based on export from Tomra
 # run from exchange online ps module
 
-$csvfile = 'C:\temp\tomrausers.csv'
+$csvfile = '.\tomrausers.csv'
 
-Connect-EXOPSSession # use credentials from target tenant (Compac)
+if(!(Get-AcceptedDomain).domainname -contains 'compacsort.com'){
+    Connect-EXOPSSession # use credentials from target tenant (Compac)
+}
 
 $SourceUsers = Import-Csv -Path $csvfile -Delimiter ";" -Encoding Default | ?{$_.windowsemailaddress -like "*@tomra.com"}
 $createcount = 0
 
 $existingcontacts = Get-MailContact -ResultSize unlimited
+$existingguests = Get-MailUser -ResultSize unlimited | ?{$_.primarysmtpaddress -ne $null} #some users added as guests, catch them here to avoid error creating contacts
 
 $ContactsTable =@{}
 $existingcontacts | %{
     $ContactsTable.Add($_.windowsemailaddress,$_)
+}
 
+$existingguests | %{
+    $ContactsTable.Add($_.primarysmtpaddress,$_)
 }
 
 foreach($user in $SourceUsers){
