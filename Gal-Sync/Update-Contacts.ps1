@@ -1,7 +1,7 @@
 ﻿#Update existing contacts based on export from Tomra
 # run from exchange online ps module
 
-$csvfile = 'C:\temp\tomrausers.csv'
+$csvfile = '.\tomrausers.csv'
 
 if(!(Get-AcceptedDomain).domainname -contains 'compacsort.com'){
     Connect-EXOPSSession # use credentials from target tenant (Compac)
