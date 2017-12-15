@@ -3,7 +3,9 @@
 
 $csvfile = '.\tomrausers.csv'
 
-Connect-EXOPSSession # use credentials from source tenant
+if(!(Get-AcceptedDomain).domainname -contains 'tomra.com'){
+    Connect-EXOPSSession # use credentials from source tenant (tomra)
+}
     
 $allmbx = get-user -RecipientTypeDetails usermailbox -ResultSize unlimited -Filter {customattribute12 -eq $null}
 
