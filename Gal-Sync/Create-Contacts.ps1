@@ -28,6 +28,8 @@ foreach($user in $SourceUsers){
         #doesn't exist - Create
         Write-Host Oppretter $($user.WindowsEmailAddress)
         New-MailContact -Name $($user.DisplayName) -LastName $($user.LastName) -DisplayName $($user.DisplayName) -ExternalEmailAddress $($user.WindowsEmailAddress) -FirstName $($user.FirstName)
+        $sip = "sip:" + $user.WindowsEmailAddress
+        Set-MailContact $($user.WindowsEmailAddress) -EmailAddresses @{add=$sip}
         $createcount += 1
     }
 }
